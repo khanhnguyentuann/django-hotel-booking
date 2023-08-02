@@ -1,0 +1,103 @@
+<!-- Trang room_detail.html -->
+{% extends "homepage/base.html" %}
+{% load humanize %}
+
+{% block title %}
+    Chi Tiết Phòng
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Phòng {{ room.room_code }}</h2>
+                <img src="{{ room.room_img.url }}" class="card-img-top" alt="Phòng {{ room.room_code }}" height="300px">
+            </div>
+            <div class="col-md-6">
+                <h3>Thông tin phòng</h3>
+                <p><strong>Mã phòng:</strong> {{ room.room_code }}</p>
+                <p><strong>Loại phòng:</strong> {{ room.get_type_display }}</p>
+                <p><strong>Tình trạng:</strong> {{ room.get_status_display }}</p>
+                <p><strong>Số giường:</strong> {{ room.number_of_beds }}</p>
+                <p><strong>Lượt ở:</strong> {{ room.check_out_count }}</p>
+                <br>
+                <p><strong>Giá phòng:</strong> {{ room.price|floatformat:0|intcomma }}đ / ngày</p>
+
+                {% if user.is_authenticated %}
+                    {% if booking %}
+                        {% if booking.status == 'pending' %}
+                            <!-- Nếu người dùng đã đặt phòng này và đang chờ thanh toán, hiển thị nút "Đang chờ thanh toán..." -->
+                            <button type="button" class="btn btn-warning">
+                                Đang chờ thanh toán...
+                            </button>
+                        {% elif booking.status == 'paid' %}
+                            <!-- Nếu người dùng đã đặt phòng thành công và trạng thái là "paid", hiển thị nút "Bạn đã đặt phòng này!" -->
+                            <button type="button" class="btn btn-info">
+                                Bạn đã đặt phòng này!
+                            </button>
+                        {% endif %}
+                    {% else %}
+                        <!-- Nếu người dùng chưa đặt phòng này, hiển thị nút "Đặt phòng này!" -->
+                        {% if room.status == 'available' %}
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Đặt phòng này!
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <p>Vui lòng <a href="{% url 'authentication:login' %}">Đăng Nhập</a> để đặt phòng.</p>
+                {% endif %}
+
+                {% if messages %}
+                    <div class="messages container mt-4">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h3>Mô tả phòng</h3>
+                <p>{{ room.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+        <!-- Modal đặt phòng -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="bookingModalLabel">Đặt phòng</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form đặt phòng -->
+                        <form action="{% url 'booking:book_room' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="room_id" value="{{ room.pk }}">
+
+                            <div class="form-group">
+                                <label for="checkin">Ngày nhận phòng:</label>
+                                <input type="date" class="form-control" id="checkin" name="checkin" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout">Ngày trả phòng:</label>
+                                <input type="date" class="form-control" id="checkout" name="checkout" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <button type="submit" class="btn btn-primary">Đặt Phòng</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

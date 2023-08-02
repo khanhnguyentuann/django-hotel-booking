@@ -1,0 +1,5 @@
+[client]
+database = hotel_management
+user = root
+password = '&@RaRFLepm1'
+default-character-set = utf8

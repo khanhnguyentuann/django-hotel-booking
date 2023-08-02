@@ -1,0 +1,56 @@
+{% extends "homepage/base.html" %}
+{% load humanize %}
+
+{% block title %}
+    Quản Lý Đặt Phòng
+{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h2 class="mb-4">Danh sách đơn phòng</h2>
+        {% for booking in bookings %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Phòng: {{ booking.room.room_code }}</h5>
+                    <p class="card-text">
+                        Ngày nhận: {{ booking.checkin_date|date:"d/m/Y" }}<br>
+                        Ngày trả: {{ booking.checkout_date|date:"d/m/Y" }}<br>
+                        Chi phí: {{ booking.get_estimated_cost|floatformat:0|intcomma }}đ<br>
+                        Trạng thái: {{ booking.get_status_display }}
+                    </p>
+                    {% if booking.status == 'pending' %}
+                        <a href="{% url 'booking:cancel_booking' booking.id %}" class="btn btn-danger">Huỷ đơn</a>
+                        <a href="{% url 'booking:pay_for_booking' booking.id %}" class="btn btn-success">Thanh toán</a>
+                    {% elif booking.status == 'paid' %}
+                        <a href="{% url 'booking:check_in' booking.id %}" class="btn btn-info">Nhận Phòng</a>
+                    {% elif booking.status == 'checked_in' %}
+                        <a href="{% url 'booking:check_out' booking.id %}" class="btn btn-warning">Trả Phòng</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>Không có đặt phòng nào đang chờ thanh toán.</p>
+        {% endfor %}
+    </div>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">Lịch sử đặt phòng</h2>
+        {% for booking in checked_out_bookings %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Phòng: {{ booking.room.room_code }}</h5>
+                    <p class="card-text">
+                        Ngày nhận: {{ booking.checkin_date|date:"d/m/Y" }}<br>
+                        Ngày trả: {{ booking.checkout_date|date:"d/m/Y" }}<br>
+                        Ước tính chi phí: {{ booking.get_estimated_cost|floatformat:0|intcomma }}đ<br>
+                        Trạng thái: {{ booking.get_status_display }}
+                    </p>
+                </div>
+            </div>
+        {% empty %}
+            <p>Không có đặt phòng nào đã được trả.</p>
+        {% endfor %}
+    </div>
+
+{% endblock %}
