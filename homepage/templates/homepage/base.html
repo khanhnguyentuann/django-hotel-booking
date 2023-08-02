@@ -38,9 +38,9 @@
                                {{ user.username }}
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
-                              <li><a class="dropdown-item" href="{% url 'authentication:account' %}">Tài khoản</a></li>
+                              <li><a type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#profile">Tài khoản</a></li>
                               <li><a class="dropdown-item" href="{% url 'booking:booking' %}">Đặt chỗ</a></li>
-                              <li><a class="dropdown-item" href="{% url 'authentication:account' %}">Ví</a></li>
+                              <li><a type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#wallet">Ví</a></li>
                               <li><hr class="dropdown-divider"></li>
                               <li><a class="dropdown-item" href="{% url 'authentication:logout' %}">Đăng xuất</a></li>
                             </ul>
@@ -71,6 +71,66 @@
         </div>
     </header>
 
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profile" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Thông tin cá nhân</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add profile information here -->
+                    <p><strong>Tên người dùng:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <!-- Add other profile information here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ví -->
+    <div class="modal fade" id="wallet" tabindex="-1" aria-labelledby="walletModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="walletModalLabel">Ví của tôi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="https://t-cf.bstatic.com/design-assets/assets/v3.80.5/illustrations-traveller/Wallet.png" alt="My Wallet" width="60" height="60">
+                    <p><strong>Số dư ví:</strong> 12,465,000 VND</p>
+                    <p><strong>Liên kết đến ngân hàng:</strong></p>
+                    <div class="bank-icons">
+                        <label>
+                            <input type="checkbox" name="bank" value="bank1">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAA9lBMVEVHcEyJwkOJwkFwp2xAiW+Vu44GWyq12sdop0RXl0NDgmVRjnCrzq8uhk9kkXsqdj0wf1I9a1IfXT+QxFqJw1BcmkE7hFV6rIhTmj0WZ0VyrZORw11im4Fgl3IDSyWr1XQHSyi/26N7vDZdmWWgyLwASCagzmNgjXgBWjiNxkEAYD6CvUkBaUYAWC4ASSpvq1d5s1Jlo1k7gT8RbDsBckwFYThOlFpxr0RFjlkpgFQ3h1cOd05dnltHi0GGwzVPkkUhcT0peDt6tkdVmVtenkMae1KJwFOZ0EUcWDwAOxhKkC4nd0pTiF88blU6iUoecCV2rmdwtikIHAPhAAAAKHRSTlMA+ki0SbOtK/79tLZPJv6vke7Tj7Gv7rbTbW1vkm+QMO9z96By1dXVKrQxjgAAAbpJREFUOI19k9l2gjAQQFFUFPe1e609XUIgQdwQrWi1IuLW/v/PNAtaoLbzkpB7M5OZcxCESORy0ZNTJOUUie02VSzWxWQrxJrxl5W3xqjf7XbfO53JxPO8tFNtHnktZtsmBqBPhBkVppmPtGk+Pl4wXLVtRVFMjCLCXFW+qHFDsRJz3DPCqiEJOYVx1ZngM0IvIcRtxlVVPydoXKC87cxQVFiZLhFIAsrbbQMjFofDoeNlmLDf5QQpxrmu62REsniRpCHW62lTVWGKDsFm93Xd+AwNT6qu9lgmm9aXz42pGJ59DeEnujpzVsB4Mxr5kFBEGlvjJuPG22IwkAI84aJXvrtsc74Y7LMBoQJAgu9uPiinCYZW6cSzGJaPCT+PfDjaXPtn+QfIeuAfGcPnI2tzy5vcAYB/yolTIjBujXkOGUFcCDzo0r9vLce9WUmS7hEEbiLY0nBw5D0NNsqEo0poKHf7IeNU0CCEAKyfwnMtbUbWkiWgAnlhQYhEdmwFOHjIRwVpqwX4OhvlxCj0KecFnn9zaqCenyDUYiCuXMgLXJ3ngnC7Iz8YWt//xUnI5V3l7h9OXhL+/78Bc8NoLB0dNnEAAAAASUVORK5CYII=" alt="Vietcombank" width="30" height="30">
+                            Vietcombank
+                        </label>
+                        <label>
+                            <input type="checkbox" name="bank" value="bank2">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACx0lEQVR4AayWA5BdQRBF/25s27YKsW3btm2WYjtZ27Zt27bNdzO1NfG8WZ6q+/27e9CQ1BUAnYh2En0j8ibKIqqiyqKffaO/6SRpKgCMJJIhKkHdKaH/GdkYx22JnhNVoOFUUBtt6+t8BFEQmghqa0RdnU8hykQTQ21OqcPK+c6rqgWY+Cbh6BcXTLqmj17H1NBspzykdsih4wFljLushwOfnGDmnwRBEFhBjOCduei2C0TKTtEYdk4bku1yddKc+yZIyCpiHUdbVgDPIUJpRRW2vLRlO+KrJuD8kv/u8XNWqlWIrXwzdd5QPdT2Y2XHyD8DkIEIWu5xooaliMgdQM+jatwAplw3AAOZPytcCdiQczRlGu1/SgNRaQWg1Lwec1GX+dt2+5TEilUnCS2dTErKK9F8lzzT6Ky7JvgXFacYrHtqzZQIOyW0fjMJT8nnbu3udw5wjcioSc0G8k1CmwgTkkJ1umRdD6ti0wtbfLAIQ1xGIeqBt4R2MiaCAAw9q8Vyyr2Y8x6Ywtg3EXUgS0LbKXhZILWjYem3/Y09yiu55qtoAHx0POLR76RGg4I4I+vGDYB5BOyMqMIX63DMJLdfuh470nK3AvKKy7lH4I16kppbAiXHaOx974huh1VrDcI3Lpt7Cb+hEZRXVkPVOQbt9yuJBhCSlMdNw51g0IpsXYtd8v/p8GdnsNjyit0vWu9RrCloIuwULcUd9iszDbbZqwgDrwT8iVtkBrocUmH+fsNzG97c2Em0GS16ZM491wGnNDHtthG3TkjvkId7ZCZEkOG2Y2OfRGqo4bql5g0Kpx1zBpLrql4Nciy9Ux53NHwhCBDjeZ1Hsq8k9zsdZJ8va8vXPLGCV3QWOLBHMt5QmlNUjtemIVj+Y+27wSUia/QiWCMU3AYInXDg/+Qd17C1/wg1SunfLB/kHRP6d80GvnM64N1zAKql5nT2y4CQAAAAAElFTkSuQmCC" alt="Sacombank" width="30" height="30">
+                            Sacombank
+                        </label>
+                        <label>
+                            <input type="checkbox" name="bank" value="bank3">
+                            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIACsAdwMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAAABAMFBgEHAv/EADMQAAEDAwMCAwcDBAMAAAAAAAECAwQABREGEiExQRMicQcjUWGBkbEUkqEyQlKCFRYz/8QAGQEBAAMBAQAAAAAAAAAAAAAAAAMEBQIB/8QAJhEAAwABAwIFBQAAAAAAAAAAAAECAwQRMRIhBRNhcZEiQVFigf/aAAwDAQACEQMRAD8A9xoqnvOooFnmwocsu+NMXtaCEZ7gZJ7ckU7dbgza7c/OlBXgsp3L2DJxmvN0d+Xfbtzx6jdFZaRrqzRrbEnu/qfCl7/CSGsq8pwSefjUMT2jadkvBsvvMZONzzWEj1Izj61z1z+SZaPUNbqH8Gvoqmv+pbdYGWHZqnFB8kNhpO4nA6+nI+9UqPaXp9SgCZaQe5Zzj7HNdlY2dFQxJLEyM1JjOpdZdTuQtPQipqAKKKKAKUuMr9MxuH9ZOE5pOxahg31UpMIuboq9jgcRt+OCPlwasnmW3k7XUBYz0IqDURkvFU4ntT4Z1LSe74FrQ/48Ykr3LCjuzT1Zp2W5DmPMsMMNbTjKUckdqFTZLg87qsfAcVgLxzFo8aw2nVT2+Pct1pap9S7JmiU6hKwkqG49Bnk1yq6zxjzIXnJ4Tn80Vs6LPl1GFZanp34XoVskqa2Xcw/tUdVH1BYX0NlxTWVhA6qIWg4+uKg1FrW4XKyy4b2nZEZt1GFPKUvCOQc8oH5qy9oUWS/qjTrjEd51CHBvU22VBPvEdSOnQ1pNcNuPaTuTbLa3Fqa4QhJUTyOgFSuW3WzNbHlxTjwKp3fvx9R5dJANn0gCAR4zwIPf3wr0HX9lgP6YmviM029GR4rbiEBJGOSPQ9Kwc+HPbsOmFIt8tbkdT61thlWR70EA8cZxVzeL9qPVMRVqh6ffioeIDi17uRnOMlIAHSuJaSaZZzRdXjuHslVb9/2KO5S3HtJ6YW8C4WXn0Af5JStOB9sCrPVGpkz7M9F/6uuH4hHv3W8bOR08o57de9T6usMi02bTsOJHdlKiqcW6WW1KyolKj0BwCc4pi8atvN3tsm3NaXltmS2W96gtWAeOmwc/WrUraUmYWoqbzXU8Nssbew+17O4bVrvUWKMFTsxZICAVElIJ6EE4+lY65zzZwy/aNXSp0zd71A37Bx1yTgjParW66Uu7OhYMdDC3X25K5D8ds7lJChgYx1I7gfE0nqGRLulnbiW3Sr8COwoOOqTHOVKxgf2jPX5mvSEuL7d7rfNQ2uyQ5q4DciO246trIJUpBWeRzgAcDNdgP3TTGtodmfuj0+HKSD74kkbsgdScEEdu1RQYUse0CzvmK+GUxGgpzwlbQfAIwTjHWntSwpa/aPZpSIzy44S2C6lBKU4UrOT0HUUBkrVqNdgYvqIuf1kt4JaVjhsAr3K9eRj516XouyP2i2BU+U7ImvgKcUt0rCPgkZP89z9Kwlk0o5domoUyIjrUtKwuG46hScnKyQM9QeAfUVr/AGc3GZIs/wChuUaQy/DAQhTzSk72+3JHJHT7UBcXe3KfWl9kZWBhSfiKih2txRCpA2oH9ueTV3RWTm8G0ubUefa/n2J1qLUdJxICUgAYAortFayWxAIyZTwnsw46W9ykF1a3D0SCBwB1PP0pM6jiBjxfBk4KUrQPDGXEKClBY56YQo84PHTkVZyIrEhbS3mkrW0dyFEcpPyNLotFvQFbIjQ3DnjthQx6YWoY+ZoCN26AWeXPaaWlTCFqLbvBBSM4OM0orUbDsqIxET4iX1eZZz5BuKQcDkglJGe3BNW5isFlxktILbud6ccKz1zUSrbCLyXTGb8RCtwVjvu3Z/cSfU5oBf8A5VS9PLuqI6kERi+lpw9fLkcjtXw5fmErUgMvHzKSlwpwhe1YQrB68KIHTntkc08mFGRFVESwgR1ApLWPLg9Rj4Uu1b4hlSVmO3uWQVHH+35APqKA+51xagvIS9naWluEgEnylIwB3JKhUEO7+PPeivRnWilzY2pWME+GlZBwevmPy4607Iix5H/uyhzKVNncnPlVjI9DgfauNQozJCm2UJIVuBxznaE5/aAKAgkXZll11sNPOKaUlB2JGCtWMIGSOcKB+AHU1G3fIrjiEJbfwVJStRRw0oqKQlXPXcCOMj7imXbfDkKWt6OhS3EhKzjkgHI+x6HtXy3aoDS21txGkqa/oIT05J/JJ+poDky5sxH22HEOFS8EqSnIQCoJBV6k44zVajUanbey41CdVMWhKywTjylIUVA88AH1+VXLsVh5e91pClEAZI7A7h/PNQrtcBxtCFxWilIASMdABgD0wcUAWyeJwe2tKSlpe0OcbXOAcjv3707UEaIxGUssNJbK8btvfAwP4qegCiiigP/Z" alt="HDbank" width="30" height="30">
+                            HDbank
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nạp tiền</button>
+                    <a href="https://examplebank.com" class="btn btn-primary">Liên kết</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% block content %}{% endblock %}
 
     <!-- Footer -->
@@ -82,12 +142,6 @@
                 </a>
                 <span class="text-muted">© 2023 Company, Khanh</span>
             </div>
-          
-            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-                <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-                <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-                <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-            </ul>
         </footer>
     </div>
         
