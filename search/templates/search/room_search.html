@@ -1,0 +1,103 @@
+{% extends "homepage/base.html" %}
+
+{% block title %}
+    Tìm Phòng
+{% endblock %}
+
+{% block content %}
+
+    <!-- Tìm phòng -->
+    <div class="container mt-4">
+        <h2>Tìm phòng</h2>
+        <form method="GET">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="checkin" class="form-label">Ngày nhận phòng:</label>
+                    <input type="date" class="form-control" id="checkin" name="checkin" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="checkout" class="form-label">Ngày trả phòng:</label>
+                    <input type="date" class="form-control" id="checkout" name="checkout" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="roomType" class="form-label">Loại phòng:</label>
+                    <select class="form-select" id="roomType" name="roomType">
+                        <option value="single">Phòng đơn</option>
+                        <option value="double">Phòng đôi</option>
+                        <option value="suite">Suite</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </form>
+
+        {% if rooms is not None %}
+            <div class="container mt-4">
+                <h2>Kết quả tìm kiếm</h2>
+                <div class="row">
+                    {% for room in rooms %}
+                        <div class="col-md-3">
+                            <div class="card mb-4">
+                                <a href="{% url 'homepage:room_detail' room.room_id %}">
+                                    {% if room.room_img %}
+                                        <img src="{{ room.room_img.url }}" class="card-img-top" alt="Phòng {{ room.room_code }}" height="190px">
+                                    {% else %}
+                                        <img src="/static/images/phong_don.jpg" class="card-img-top" alt="Không có hình ảnh cho phòng {{ room.room_code }}">
+                                    {% endif %}
+                                </a>
+                                <div class="card-body">
+                                    <a href="{% url 'homepage:room_detail' room.room_id %}" style="text-decoration: none; color: inherit;">
+                                        <h5 class="card-title">{{ room.get_type_display }} - {{ room.room_code }}</h5>
+                                    </a>
+                                    <p class="card-text">{{ room.description }}</p>
+                                    <a href="{% url 'homepage:room_detail' room.room_id %}">Xem thêm</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="container mt-4">
+                            <h4>Không có phòng nào khớp với yêu cầu tìm kiếm của bạn.</h4>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <nav aria-label="...">
+                <ul class="pagination justify-content-center">
+                    {% if rooms.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ rooms.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&laquo;</span>
+                        </li>
+                    {% endif %}
+            
+                    {% for num in rooms.paginator.page_range %}
+                        <li class="page-item {% if num == rooms.number %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+            
+                    {% if rooms.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ rooms.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&raquo;</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            
+        {% endif %}
+
+    </div>
+
+{% endblock %}

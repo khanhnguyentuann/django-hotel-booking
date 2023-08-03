@@ -63,6 +63,9 @@
                             <a class="nav-link px-2 text-secondary" href="{% url 'homepage:index' %}">Trang Chủ</a>
                         </li>
                         <li>
+                            <a class="nav-link px-2 text-white" href="{% url 'search:search' %}">Tìm Phòng</a>
+                        </li>
+                        <li>
                             <a class="nav-link px-2 text-white" href="{% url 'booking:booking' %}">Đặt Phòng</a>
                         </li>
                     </ul>
@@ -80,13 +83,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Add profile information here -->
                     <p><strong>Tên người dùng:</strong> {{ user.username }}</p>
                     <p><strong>Email:</strong> {{ user.email }}</p>
-                    <!-- Add other profile information here -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quên mật khẩu</button>
                     <button type="button" class="btn btn-primary">Lưu thay đổi</button>
                 </div>
             </div>
